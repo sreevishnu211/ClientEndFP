@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,7 +31,7 @@ public class AttendanceUpload extends AppCompatActivity implements View.OnClickL
     ImageView imgView;
     final int IMG_REQUEST = 1;
     Bitmap bitmap;
-    private String UploadUrl = "http://192.168.1.113:5000/";
+    private String UploadUrl = "http://192.168.31.236:5000/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class AttendanceUpload extends AppCompatActivity implements View.OnClickL
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
         MySingleton.getInstance(AttendanceUpload.this).addToRequestQue(stringRequest);
     }
 

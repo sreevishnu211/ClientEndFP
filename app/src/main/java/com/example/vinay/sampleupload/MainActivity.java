@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
         MySingleton.getInstance(MainActivity.this).addToRequestQue(stringRequest);
     }
 
