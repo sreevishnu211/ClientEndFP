@@ -108,8 +108,7 @@ public class AttendanceUpload extends AppCompatActivity implements View.OnClickL
                 return params;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0,
-                0));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
         MySingleton.getInstance(AttendanceUpload.this).addToRequestQue(stringRequest);
     }
 
