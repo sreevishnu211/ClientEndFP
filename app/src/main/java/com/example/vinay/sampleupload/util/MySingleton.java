@@ -1,4 +1,4 @@
-package com.example.vinay.sampleupload;
+package com.example.vinay.sampleupload.util;
 
 import android.content.Context;
 

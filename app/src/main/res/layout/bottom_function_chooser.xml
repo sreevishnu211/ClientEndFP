@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="70dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#f2f2f2"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="4"
+            android:text="@string/settings_text" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:src="@drawable/settings" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/setting_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_margin="16dp"
+        android:text="Local IP:"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/setting_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@+id/setting_text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_text_input"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="setNewLocalIp"
+        android:text="Save" />
+
+</RelativeLayout>

@@ -2,7 +2,6 @@ package com.example.vinay.sampleupload;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +18,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class Attendance extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AttendanceActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     int mYear,mMonth,mDay;
     Spinner semSpinner,classSpinner;
@@ -43,7 +42,7 @@ public class Attendance extends AppCompatActivity implements AdapterView.OnItemS
                 mMonth = mcurrentDate.get(Calendar.MONTH);
                 mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker = new DatePickerDialog(Attendance.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker = new DatePickerDialog(AttendanceActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         Calendar myCalendar = Calendar.getInstance();
                         myCalendar.set(Calendar.YEAR, selectedyear);
@@ -114,7 +113,7 @@ public class Attendance extends AppCompatActivity implements AdapterView.OnItemS
 
     public void goToAttendanceUpload(View view) {
         if(isDateChoosen && isSemChoosen && isClassChoosen){
-            Intent intent = new Intent(Attendance.this, AttendanceUpload.class);
+            Intent intent = new Intent(AttendanceActivity.this, AttendanceUploadActivity.class);
             String extraString = dateString + "_" + semString + "_" + classString;
             intent.putExtra("filename", extraString);
             startActivity(intent);
