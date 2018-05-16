@@ -133,9 +133,8 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
                 return params;
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0,
-                0));
-        MySingleton.getInstance(MarkAttendanceActivity.this).addToRequestQue(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
+        MySingleton.getInstance(AttendanceUpload.this).addToRequestQue(stringRequest);
     }
 
     private String imageToString(Bitmap bitmap) {
