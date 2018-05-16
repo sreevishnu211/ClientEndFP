@@ -29,7 +29,7 @@ public class AttendanceActivity extends AppCompatActivity implements AdapterView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attendance);
+        setContentView(R.layout.activity_attendance_detail);
         isClassChoosen=false;
         isDateChoosen=false;
         isSemChoosen=false;
@@ -113,7 +113,7 @@ public class AttendanceActivity extends AppCompatActivity implements AdapterView
 
     public void goToAttendanceUpload(View view) {
         if(isDateChoosen && isSemChoosen && isClassChoosen){
-            Intent intent = new Intent(AttendanceActivity.this, AttendanceUploadActivity.class);
+            Intent intent = new Intent(AttendanceActivity.this, MarkAttendanceActivity.class);
             String extraString = dateString + "_" + semString + "_" + classString;
             intent.putExtra("filename", extraString);
             startActivity(intent);

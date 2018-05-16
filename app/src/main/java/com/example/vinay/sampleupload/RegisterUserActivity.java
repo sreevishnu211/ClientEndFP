@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button UplaodBn,ChooseBn;
     EditText NAME;
@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register_user);
         UplaodBn = (Button) findViewById(R.id.uploadBn);
         ChooseBn = (Button) findViewById(R.id.chooseBn);
         NAME = (EditText) findViewById(R.id.name);
@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UploadUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(RegisterActivity.this,response,Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterUserActivity.this,response,Toast.LENGTH_LONG).show();
                 imgView.setImageResource(0);
                 imgView.setVisibility(View.GONE);
                 NAME.setText("");
@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 return params;
             }
         };
-        MySingleton.getInstance(RegisterActivity.this).addToRequestQue(stringRequest);
+        MySingleton.getInstance(RegisterUserActivity.this).addToRequestQue(stringRequest);
     }
 
     private String imageToString(Bitmap bitmap){
