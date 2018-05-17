@@ -12,7 +12,7 @@ public class AppSettings {
     private static SharedPreferences prefs = null;
 
 
-    private static final String APP_SHARED_PREFERENCE_NAME = "com.example.vinay.sampleupload";
+    private static final String APP_SHARED_PREFERENCE_NAME = "om.example.vinay.sampleupload";
     public static String PREF_LOCAL_IP = "PREF_LOCAL_IP";
 
 

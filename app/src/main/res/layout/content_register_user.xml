@@ -2,6 +2,7 @@
 
 <RelativeLayout android:id="@+id/activity_main"
     android:layout_width="match_parent"
+    android:layout_margin="15dp"
     android:layout_height="match_parent"
     tools:context=".RegisterUserActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,20 +25,39 @@
         android:id="@+id/name"
         android:visibility="gone"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_below="@id/name"
+        android:layout_marginTop="10dp"
+        android:id="@+id/imageButtonContainer"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:text="Choose Image"
-        android:layout_marginTop="25dp"
-        android:id="@+id/chooseBn"/>
+        android:weightSum="2">
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:text="Choose Image"
+            android:id="@+id/chooseBn"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:text="Capture Image"
+            android:onClick="captureImageIntent"
+            android:id="@+id/captureImageButton"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chooseBn"
+        android:layout_below="@+id/imageButtonContainer"
         android:text="Upload Image"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
         android:id="@+id/uploadBn"/>
 
 </RelativeLayout>

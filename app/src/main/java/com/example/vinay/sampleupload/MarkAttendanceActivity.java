@@ -39,7 +39,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
     final int IMG_REQUEST = 1;
     Bitmap bitmap;
     String mCurrentPhotoPath;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
     private String uploadUrl;
 
     @Override
@@ -48,7 +48,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_mark_attendance);
 
 //        uploadUrl = AppSettings.getValue(getApplicationContext(), AppSettings.PREF_LOCAL_IP, "192.168.31.1:5000");
-        uploadUrl = "192.168.31.1:5000";
+        uploadUrl = "http://192.168.31.236:5000";
 
 
         Bundle bundle = getIntent().getExtras();
@@ -74,6 +74,8 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
         }
     }
 
+
+
     void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -84,34 +86,38 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null) {
-            Uri path = data.getData();
-            Toast.makeText(getApplicationContext(), path.toString(), Toast.LENGTH_LONG).show();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+        switch(requestCode) {
+            case IMG_REQUEST:
+                Uri path = data.getData();
+                Toast.makeText(getApplicationContext(), path.toString(), Toast.LENGTH_LONG).show();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                    imgView.setImageBitmap(bitmap);
+                    imgView.setVisibility(View.VISIBLE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
                 imgView.setImageBitmap(bitmap);
                 imgView.setVisibility(View.VISIBLE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                break;
         }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Uri path = data.getData();
-            Toast.makeText(getApplicationContext(), path.toString(), Toast.LENGTH_LONG).show();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
-                imgView.setImageBitmap(bitmap);
-                imgView.setVisibility(View.VISIBLE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     private void uploadImage() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, uploadUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Intent resultActivityIntent = new Intent(MarkAttendanceActivity.this, ResultActivity.class);
+                resultActivityIntent.putExtra("response", response);
+                resultActivityIntent.putExtra("type", "mark_attendance");
+                startActivity(resultActivityIntent);
+
                 Toast.makeText(MarkAttendanceActivity.this, response, Toast.LENGTH_LONG).show();
                 imgView.setImageResource(0);
                 imgView.setVisibility(View.GONE);
@@ -134,7 +140,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
-        MySingleton.getInstance(AttendanceUpload.this).addToRequestQue(stringRequest);
+        MySingleton.getInstance(MarkAttendanceActivity.this).addToRequestQue(stringRequest);
     }
 
     private String imageToString(Bitmap bitmap) {
@@ -144,45 +150,10 @@ public class MarkAttendanceActivity extends AppCompatActivity implements View.On
         return Base64.encodeToString(imgBytes, Base64.DEFAULT);
     }
 
-    public void captureImage(View view) {
+    public void takePictureIntent(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        BuildConfig.APPLICATION_ID + ".provider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE  );
-            }
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-
-
     }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-
 }

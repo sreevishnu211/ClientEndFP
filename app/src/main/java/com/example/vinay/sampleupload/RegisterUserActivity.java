@@ -28,12 +28,13 @@ import java.util.Map;
 
 public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
     Button UplaodBn,ChooseBn;
     EditText NAME;
     ImageView imgView;
     final int IMG_REQUEST=1;
     Bitmap bitmap;
-    private String UploadUrl="http://192.168.1.113:5000/encodeimage";
+    private String UploadUrl="http://192.168.31.236:5000/encodeimage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +71,26 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==IMG_REQUEST && resultCode==RESULT_OK && data!=null){
-            Uri path=data.getData();
-            Toast.makeText(getApplicationContext(),path.toString(),Toast.LENGTH_LONG).show();
-            try {
-                bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+        switch (requestCode) {
+            case IMG_REQUEST:
+                Uri path=data.getData();
+                Toast.makeText(getApplicationContext(),path.toString(),Toast.LENGTH_LONG).show();
+                try {
+                    bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+                    imgView.setImageBitmap(bitmap);
+                    imgView.setVisibility(View.VISIBLE);
+                    NAME.setVisibility(View.VISIBLE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
                 imgView.setImageBitmap(bitmap);
                 imgView.setVisibility(View.VISIBLE);
                 NAME.setVisibility(View.VISIBLE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
@@ -112,7 +122,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
             }
         };
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(40 * 10000, 0, 0));
-        MySingleton.getInstance(MainActivity.this).addToRequestQue(stringRequest);
+        MySingleton.getInstance(RegisterUserActivity.this).addToRequestQue(stringRequest);
     }
 
     private String imageToString(Bitmap bitmap){
@@ -120,5 +130,12 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+    }
+
+    public void captureImageIntent(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 }

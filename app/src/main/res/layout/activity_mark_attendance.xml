@@ -12,6 +12,7 @@
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
+        android:layout_below="@id/attendanceImageUploadButton"
         android:id="@+id/attendanceImage"
         android:visibility="gone"/>
 
@@ -36,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/attendanceImage"
             android:text="Capture Image"
+            android:onClick="takePictureIntent"
             android:layout_marginTop="25dp"
-            android:onClick="captureImage"
             android:id="@+id/takeNewImageButton"/>
 
     </LinearLayout>
